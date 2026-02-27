@@ -5,16 +5,19 @@ using UnityEngine;
 public class PlayerBall : MonoBehaviour
 {
     public float jumpForce;
+    bool isjump;
     Rigidbody rigid;
 
     void Awake()
     {
+        isjump = false;
         rigid = GetComponent<Rigidbody>();
     }
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && ! isjump)
         {
+            isjump = true;
             rigid.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
     }
@@ -25,4 +28,12 @@ public class PlayerBall : MonoBehaviour
 
         rigid.AddForce(new Vector3(h, 0, v), ForceMode.Impulse);
     }
-}
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Floor")
+        {
+            isjump = false;
+        }
+    }
+}   
+
