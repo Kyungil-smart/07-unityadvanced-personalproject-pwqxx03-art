@@ -32,7 +32,7 @@ public class PlayerBall : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Floor")
+        if (collision.gameObject.tag == "Floor")
         {
             isjump = false;
         }
