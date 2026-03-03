@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerBall : MonoBehaviour
 {
     public float jumpForce;
+    public int itemCount;
     bool isjump;
     Rigidbody rigid;
 
     void Awake()
-    {
+    {   
+     
         isjump = false;
         rigid = GetComponent<Rigidbody>();
     }
@@ -35,5 +37,20 @@ public class PlayerBall : MonoBehaviour
             isjump = false;
         }
     }
+    void OnTriggerEnter(Collider other)
+     {
+        if (other.CompareTag("Itemc"))
+        {
+            itemCount++;
+
+            AudioSource audio = GetComponent<AudioSource>();
+            if (audio != null)
+            {
+                audio.Play();
+            }
+
+            other.gameObject.SetActive(false);
+        }
+     }
 }   
 
