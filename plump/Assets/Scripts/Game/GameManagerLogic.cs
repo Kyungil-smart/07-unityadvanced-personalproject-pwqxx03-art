@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerLogic : MonoBehaviour
 {
@@ -17,4 +18,10 @@ public class GameManagerLogic : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "player")
+        SceneManager.LoadScene(stage);
+    }
+
 }
