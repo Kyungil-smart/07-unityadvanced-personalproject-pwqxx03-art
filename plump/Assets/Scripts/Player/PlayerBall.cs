@@ -1,28 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBall : MonoBehaviour
 {
     public float jumpForce;
     public int itemCount;
-    bool isjump;
+
+    bool isJump;
     Rigidbody rigid;
 
     void Awake()
-    {   
-     
-        isjump = false;
+    {
+        isJump = false;
         rigid = GetComponent<Rigidbody>();
     }
+
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && ! isjump)
+        if (Input.GetButtonDown("Jump") && !isJump)
         {
-            isjump = true;
+            isJump = true;
             rigid.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
     }
+
     void FixedUpdate()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -30,15 +33,17 @@ public class PlayerBall : MonoBehaviour
 
         rigid.AddForce(new Vector3(h, 0, v), ForceMode.Impulse);
     }
+
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor")
+        if (collision.gameObject.name == "Floor")
         {
-            isjump = false;
+            isJump = false;
         }
     }
+
     void OnTriggerEnter(Collider other)
-     {
+    {
         if (other.CompareTag("Itemc"))
         {
             itemCount++;
@@ -51,6 +56,18 @@ public class PlayerBall : MonoBehaviour
 
             other.gameObject.SetActive(false);
         }
-     }
-}   
-
+        else if (other.CompareTag("Point"))
+        {
+            if (itemCount == GameManagerLogic.Instance.totalItemCount)
+            {
+                // Game Clear
+                SceneManager.LoadScene("New Scene 1_1");
+            }
+            else
+            {
+                // Restart...
+                SceneManager.LoadScene("New Scene 1_0");
+            }
+        }
+    }
+}
